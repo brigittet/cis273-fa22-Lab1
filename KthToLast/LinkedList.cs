@@ -307,7 +307,14 @@ namespace KthToLast
         // TODO 
         public T KthToLast(int k)
         {
-            return default(T);
+            var currentNode = Head;
+
+            for (int i = 0; i < (length - 1 - k); i++)
+            {
+                currentNode = currentNode.Next;
+            }
+
+            return currentNode.Data;
         }
     }
 }

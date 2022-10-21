@@ -17,6 +17,10 @@ namespace Polynomial
         // TODO
         public void AddTerm(double coeff, int power)
 		{
+            if (coeff == 0.0)
+            {
+                power = 0;
+            }
             var currentNode = terms.First;
             while( currentNode != null )
             {
@@ -36,9 +40,9 @@ namespace Polynomial
                     return;
                 }
 
+
                 currentNode = currentNode.Next;
             }
-
             // Add new term to end of list
             terms.AddLast(new Term(power, coeff));
 
@@ -49,9 +53,42 @@ namespace Polynomial
         {
             string result = "";
 
-            foreach( var term in terms)
+            int i = 1;
+
+            int length = 0;
+
+            foreach (var term in terms)
             {
-                result += term.ToString() + " + ";
+                length += 1;
+            }
+
+            if (length == 0)
+            {
+                return "0";
+            }
+            else
+            {
+                foreach (var term in terms)
+                {
+                    if (term.Coefficient != 0.0)
+                    {
+                        if (i == length)
+                        {
+                            result += term.ToString();
+                        }
+                        else
+                        {
+                            result += term.ToString() + "+";
+                            i++;
+                        }
+
+                    }
+
+                    else
+                    {
+                        return "0";
+                    }
+                }
             }
 
             return result;
@@ -79,7 +116,18 @@ namespace Polynomial
         public static Polynomial Subtract(Polynomial p1, Polynomial p2)
         {
             Polynomial difference = new Polynomial();
-            // Do the work...
+
+            foreach (var term in p1.terms)
+            {
+                difference.AddTerm(term.Coefficient, term.Power);
+            }
+
+            Polynomial negative_p2 = Negate(p2);
+
+            foreach (var term in negative_p2.terms)
+            {
+                difference.AddTerm(term.Coefficient, term.Power);
+            }
 
             return difference;
         }
@@ -100,6 +148,16 @@ namespace Polynomial
         {
             Polynomial product = new Polynomial();
             // Do the work...
+
+            foreach (var term1 in p1.terms)
+            {
+                foreach (var term2 in p2.terms)
+                {
+                    double coeff = term1.Coefficient * term2.Coefficient;
+                    int pow = term1.Power + term2.Power;
+                    product.AddTerm(coeff, pow);
+                }
+            }
 
             return product;
         }

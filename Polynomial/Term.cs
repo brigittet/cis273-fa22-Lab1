@@ -15,8 +15,17 @@ namespace Polynomial
 		// TODO
 		public override string ToString()
 		{
-			return $"{Coefficient}x^{Power}";
-		}
+			if (Coefficient == 0)
+            {
+				return "0";
+            }
+			if (Power == 0)
+            {
+				return $"{Coefficient}";
+            }
+
+            return $"{Coefficient}x^{Power}";
+        }
 
 	}
 }
